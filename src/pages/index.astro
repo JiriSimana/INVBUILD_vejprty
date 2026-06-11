@@ -9,186 +9,131 @@ import StorySplit  from '../components/StorySplit.astro';
 import Lokalita    from '../components/Lokalita.astro';
 import Services    from '../components/Services.astro';
 import Units       from '../components/Units.astro';
-import ImageGrid   from '../components/ImageGrid.astro';
 import Kontakt     from '../components/Kontakt.astro';
 import Footer      from '../components/Footer.astro';
 import Reveal      from '../components/Reveal.astro';
 
-// ----- HERO -----
-const stats = [
-  { label: 'Cena',                 value: '19 334 000 Kč' },
-  { label: 'Bytové jednotky',      value: '4'             },
-  { label: 'Celková plocha bytů',  value: '430 m²'        },
-  { label: 'Komerční prostor',     value: '100 m²'        },
+// ===== HERO =====
+const heroStats = [
+  { label: 'Cena',                value: '19 334 000 Kč' },
+  { label: 'Bytové jednotky',     value: '4'             },
+  { label: 'Plocha bytů',         value: '430 m²'        },
+  { label: 'Komerční prostor',    value: '100 m²'        },
 ];
 
-const heroImages = [
-  { src: '/img/dron_1.webp', alt: 'Vejprty — letecký pohled na nemovitost' },
-  { src: '/img/dron_3.webp', alt: 'Vejprty — pohled na dům a okolní krajinu' },
-  { src: '/img/dron_5.webp', alt: 'Vejprty — panoramatický pohled' },
-];
+// Hero používá VIDEO (nahraj soubor do /public/videos/vejprty.mp4)
+// Pokud video neexistuje, browser spadne na poster image.
+const heroVideo = {
+  src: '/videos/vejprty.mp4',
+  poster: '/img/dron_1.webp',
+  posterAlt: 'Vejprty — letecký pohled na nemovitost',
+};
 
-// ----- GALERIE (drone shots) -----
-const galleryImages = [
-  { src: '/img/dron_1.webp', alt: 'Letecký pohled — celkový' },
-  { src: '/img/dron_2.webp', alt: 'Drone fotografie z výšky' },
-  { src: '/img/dron_3.webp', alt: 'Dům a okolní krajina Krušných hor' },
-  { src: '/img/dron_4.webp', alt: 'Vejprty z ptačí perspektivy' },
-  { src: '/img/dron_5.webp', alt: 'Panoramatický pohled na lokalitu' },
-  { src: '/img/exterior/194A8787.webp', alt: 'Historické centrum Vejprt' },
-  { src: '/img/exterior/194A8790.webp', alt: 'Vejprty — náměstí' },
-  { src: '/img/exterior/194A8726.webp', alt: 'Zahrada s pergolou' },
-  { src: '/img/exterior/194A8738.webp', alt: 'Zahradní altán' },
-  { src: '/img/exterior/194A8730.webp', alt: 'Venkovní výtah — detail' },
-];
-
-// ----- KLÍČOVÉ VÝHODY (Services-style cards) -----
+// ===== KLÍČOVÉ VÝHODY (6 ikon-cards) =====
 const featureCards = [
-  { title: '4 bytové jednotky',                blurb: 'Plně rekonstruované byty od 1+KK do 4+1, vlastní kuchyně i koupelny.', image: { src: '/img/byt2/194A8487.webp', alt: '4 bytové jednotky' } },
-  { title: 'Komerční prostory + zavedený salon', blurb: 'Kadeřnictví 100 m² s nájemcem, plus 2 menší provozovny v suterénu.', image: { src: '/img/salon/194A8704.webp', alt: 'Kadeřnický salon' } },
-  { title: 'Fotovoltaika & úsporné vytápění',  blurb: 'Solární systém na střeše a garáži, nízké provozní náklady celoročně.', image: { src: '/img/fotovoltaika/194A8732.webp', alt: 'Fotovoltaika' } },
-  { title: 'Venkovní výtah',                    blurb: 'Moderní skleněný výtah po celé výšce budovy — bezbariérový přístup.', image: { src: '/img/vytah/194A8718.webp', alt: 'Venkovní výtah' } },
-  { title: 'Garáž pro 4 vozy + vířivka',        blurb: 'Krytá garáž 72 m², pergola, sudová vyhřívaná vířivka, oplocený pozemek.', image: { src: '/img/garaz/194A8701.webp', alt: 'Garáž' } },
-  { title: 'Kamerový systém Hikvision',         blurb: 'Bezpečnostní systém po celém objektu — klid pro rezidenty i nájemce.', image: { src: '/img/exterior/194A8781.webp', alt: 'Kamerový systém' } },
+  { title: '4 bytové jednotky',          blurb: '1+KK až 4+1, vlastní kuchyně i koupelny, vytápění a elektroměry.', image: { src: '/img/byt2/194A8487.webp', alt: '4 bytové jednotky' } },
+  { title: 'Kadeřnictví v provozu',      blurb: 'Salon 100 m² s nájemcem — okamžitý pasivní příjem.',              image: { src: '/img/salon/194A8704.webp', alt: 'Kadeřnictví' } },
+  { title: 'Fotovoltaika a vytápění',    blurb: 'Solární panely + úsporné vytápění = minimální provozní náklady.', image: { src: '/img/fotovoltaika/194A8732.webp', alt: 'Fotovoltaika' } },
+  { title: 'Venkovní výtah',              blurb: 'Skleněný výtah po celé výšce — bezbariérový přístup.',           image: { src: '/img/vytah/194A8718.webp', alt: 'Venkovní výtah' } },
+  { title: 'Garáž 72 m² + vířivka',      blurb: 'Krytá garáž pro 4 vozy, pergola, sudová vyhřívaná vířivka.',     image: { src: '/img/garaz/194A8701.webp', alt: 'Garáž' } },
+  { title: 'Bezpečnost Hikvision',       blurb: 'Kamerový systém po celém objektu — klid pro vás i nájemce.',     image: { src: '/img/exterior/194A8781.webp', alt: 'Kamery' } },
 ];
 
-// ----- BYTOVÉ JEDNOTKY -----
+// ===== BYTOVÉ JEDNOTKY — méně fotek per byt (max 6 vybraných) =====
 function toWebp(arr: string[]) {
   return arr.map(s => s.replace('/images/', '/img/').replace(/\.jpe?g$/, '.webp'));
 }
-
 const units = [
   {
     id: 1, name: 'Byt 1 — 1. patro', floor: '1. patro',
     area: '100 m²', layout: '3+1',
-    description: 'Prostorný byt s vlastní kuchyní, koupelnou, vytápěním a elektroměrem. Moderní vybavení a kvalitní materiály.',
-    gallery: toWebp(['/images/byt1/194A8437.jpg','/images/byt1/194A8439.jpg','/images/byt1/194A8442.jpg','/images/byt1/194A8444.jpg','/images/byt1/194A8447.jpg','/images/byt1/194A8454.jpg','/images/byt1/194A8457.jpg','/images/byt1/194A8459.jpg','/images/byt1/194A8462.jpg','/images/byt1/194A8469.jpg','/images/byt1/194A8471.jpg']),
+    description: 'Prostorný byt s vlastní kuchyní a koupelnou. Moderní vybavení, kvalitní materiály.',
+    gallery: toWebp(['/images/byt1/194A8437.jpg','/images/byt1/194A8442.jpg','/images/byt1/194A8447.jpg','/images/byt1/194A8457.jpg','/images/byt1/194A8462.jpg','/images/byt1/194A8471.jpg']),
   },
   {
     id: 2, name: 'Byt 2 — 2. patro', floor: '2. patro',
     area: '120 m²', layout: '3+1',
-    description: 'Největší bytová jednotka s výborným dispozičním řešením. Vlastní kuchyň, koupelna, vytápění a elektroměr.',
-    gallery: toWebp(['/images/byt2/194A8487.jpg','/images/byt2/194A8495.jpg','/images/byt2/194A8499.jpg','/images/byt2/194A8503.jpg','/images/byt2/194A8504.jpg','/images/byt2/194A8507.jpg','/images/byt2/194A8512.jpg','/images/byt2/194A8515.jpg','/images/byt2/194A8524.jpg','/images/byt2/194A8527.jpg','/images/byt2/194A8528.jpg','/images/byt2/194A8530.jpg','/images/byt2/194A8532.jpg','/images/byt2/194A8533.jpg','/images/byt2/194A8535.jpg','/images/byt2/194A8540.jpg']),
+    description: 'Největší 3+1 v domě. Výborné dispoziční řešení, vlastní kuchyň, koupelna, vytápění.',
+    gallery: toWebp(['/images/byt2/194A8487.jpg','/images/byt2/194A8499.jpg','/images/byt2/194A8503.jpg','/images/byt2/194A8512.jpg','/images/byt2/194A8527.jpg','/images/byt2/194A8540.jpg']),
   },
   {
     id: 3, name: 'Byt 3 — 3. patro', floor: '3. patro',
     area: '120 m²', layout: '4+1',
-    description: 'Nejvíce pokojů ze všech bytů. Prostorná jednotka s výhledem na historické centrum. Vlastní kuchyň, koupelna, vytápění a elektroměr.',
-    gallery: toWebp(['/images/byt3/194A8587.jpg','/images/byt3/194A8588.jpg','/images/byt3/194A8590.jpg','/images/byt3/194A8593.jpg','/images/byt3/194A8596.jpg','/images/byt3/194A8602.jpg','/images/byt3/194A8604.jpg','/images/byt3/194A8605.jpg','/images/byt3/194A8607.jpg','/images/byt3/194A8609.jpg','/images/byt3/194A8610.jpg','/images/byt3/194A8615.jpg','/images/byt3/194A8616.jpg','/images/byt3/194A8620.jpg','/images/byt3/194A8625.jpg','/images/byt3/194A8629.jpg']),
+    description: 'Nejvíce pokojů ze všech bytů. Výhled na historické centrum, vlastní zázemí.',
+    gallery: toWebp(['/images/byt3/194A8587.jpg','/images/byt3/194A8593.jpg','/images/byt3/194A8604.jpg','/images/byt3/194A8615.jpg','/images/byt3/194A8620.jpg','/images/byt3/194A8629.jpg']),
   },
   {
     id: 4, name: 'Byt 4 — Podkroví', floor: 'Podkroví',
     area: '90 m²', layout: '1+KK',
-    description: 'Jedinečný podkrovní byt s designovým stropem s motivem oblohy. Šikmé střešní okna poskytují přirozené světlo a nezapomenutelný výhled.',
-    gallery: toWebp(['/images/byt4/194A8558.jpg','/images/byt4/194A8560.jpg','/images/byt4/194A8562.jpg','/images/byt4/194A8565.jpg','/images/byt4/194A8570.jpg','/images/byt4/194A8574.jpg']),
+    description: 'Designový strop s motivem oblohy, šikmé střešní okna — světlo a nezapomenutelný výhled.',
+    gallery: toWebp(['/images/byt4/194A8558.jpg','/images/byt4/194A8560.jpg','/images/byt4/194A8565.jpg','/images/byt4/194A8570.jpg','/images/byt4/194A8574.jpg']),
   },
 ];
 
-// ----- TECHNOLOGIE (fotovoltaika, výtah, vířivka, salon, kamery) -----
-const technologyImages = [
-  { url: '/img/fotovoltaika/194A8732.webp', alt: 'Fotovoltaické panely',             caption: 'Solární systém s výhledem na Vejprty' },
-  { url: '/img/fotovoltaika/194A8749.webp', alt: 'Solární panely — detail',          caption: 'Fotovoltaická instalace na budově' },
-  { url: '/img/fotovoltaika/194A8690.webp', alt: 'Střídač a rozvaděč',               caption: 'Technologie pro správu solární energie' },
-  { url: '/img/garaz/194A8701.webp',        alt: 'Garáž s fotovoltaikou',            caption: 'Garáž pro 4 vozy s panely na střeše' },
-  { url: '/img/garaz/194A8699.webp',        alt: 'Garáž — interiér',                 caption: 'Prostorná garáž s parkovacími místy' },
-  { url: '/img/exterior/194A8760.webp',     alt: 'Venkovní výtah',                   caption: 'Moderní exteriérový výtah na budově' },
-  { url: '/img/vytah/194A8718.webp',        alt: 'Výtah — interiér',                 caption: 'Skleněný výtah s ovládacím panelem' },
-  { url: '/img/vytah/194A8497.webp',        alt: 'Pohled z výtahu',                  caption: 'Výhled z výtahu do obytných prostor' },
-  { url: '/img/exterior/194A8758.webp',     alt: 'Zahrada a venkovní posezení',      caption: 'Zahrada s pergolou a relaxačními prostory' },
-  { url: '/img/exterior/194A8746.webp',     alt: 'Vířivka v zahradě',                caption: 'Venkovní vířivá vana s horským výhledem' },
-  { url: '/img/salon/194A8704.webp',        alt: 'Kadeřnický salon',                 caption: 'Profesionální kadeřnictví — zavedený provoz' },
-  { url: '/img/exterior/194A8781.webp',     alt: 'Kamerový systém',                  caption: 'Bezpečnostní systém Hikvision' },
+// ===== GALERIE: vybraných 8 fotek z drone + okolí =====
+const galleryImages = [
+  { src: '/img/dron_2.webp', alt: 'Letecký pohled na nemovitost' },
+  { src: '/img/dron_3.webp', alt: 'Dům v krajině Krušných hor' },
+  { src: '/img/dron_4.webp', alt: 'Z ptačí perspektivy' },
+  { src: '/img/dron_5.webp', alt: 'Panoramatický pohled' },
+  { src: '/img/exterior/194A8787.webp', alt: 'Historické centrum Vejprt' },
+  { src: '/img/exterior/194A8726.webp', alt: 'Zahrada s pergolou' },
+  { src: '/img/exterior/194A8746.webp', alt: 'Vířivka v zahradě' },
+  { src: '/img/wellness/194A8687.webp', alt: 'Wellness místnost s vířivkou' },
 ];
 
-// ----- SPOLEČNÉ PROSTORY -----
-const commonAreas = [
-  { url: '/img/chodby/194A8531.webp', alt: 'Historické schodiště',  caption: 'Původní dřevěné schodiště se zachovanými detaily' },
-  { url: '/img/chodby/194A8646.webp', alt: 'Vstupní prostor',       caption: 'Vstup do budovy s moderní podlahou' },
-  { url: '/img/chodby/194A8647.webp', alt: 'Chodba — 1. patro',     caption: 'Čistá, světlá chodba s moderním osvětlením' },
-  { url: '/img/chodby/194A8648.webp', alt: 'Chodba — detail',       caption: 'Prostorné společné prostory' },
-  { url: '/img/chodby/194A8660.webp', alt: 'Schodiště shora',       caption: 'Vertikální propojení všech pater' },
-  { url: '/img/chodby/194A8661.webp', alt: 'Společné prostory',     caption: 'Udržované chodby a přístupové cesty' },
-];
-
-// ----- SKLEP -----
-const storageBasement = [
-  { url: '/img/sklep/194A8665.webp', alt: 'Sklep — technická místnost',  caption: 'Kotelna s moderním vytápěcím systémem' },
-  { url: '/img/sklep/194A8669.webp', alt: 'Sklep — úložný prostor',      caption: 'Sklepní prostory s regály' },
-  { url: '/img/sklep/194A8671.webp', alt: 'Sklep — chodba',              caption: 'Přístupové prostory v suterénu' },
-  { url: '/img/sklep/194A8672.webp', alt: 'Sklep — skladovací místnost', caption: 'Suché skladovací prostory' },
-  { url: '/img/sklep/194A8674.webp', alt: 'Sklep — další místnost',      caption: 'Dodatečné úložné prostory' },
-  { url: '/img/sklep/194A8675.webp', alt: 'Sklep — technické zázemí',    caption: 'Rozvodny a technická infrastruktura' },
-];
-
-// ----- WELLNESS -----
-const wellnessImages = [
-  { url: '/img/wellness/194A8687.webp', alt: 'Wellness místnost s vířivkou', caption: 'Privátní relaxační prostor s vířivou vanou' },
-  { url: '/img/wellness/194A8688.webp', alt: 'Vířivka — detail',             caption: 'Speciální místnost s geometrickým stropem a loveckými trofejemi' },
-  { url: '/img/wellness/194A8689.webp', alt: 'Wellness — interiér',          caption: 'Unikátní prostor pro odpočinek a relaxaci' },
-];
-
-// ----- LOKALITA accordion -----
+// ===== LOKALITA accordion (zkráceno) =====
 const locGroups = [
   {
     id: 'okoli',
     title: 'Lokalita & příroda',
-    content: `<p>Vejprty leží v srdci <strong>Krušných hor</strong> — oblasti, která spojuje klid,
-      přírodu a výjimečné možnosti pro volný čas.</p>
+    content: `<p>Vejprty leží v srdci <strong>Krušných hor</strong>. Dům se nachází přímo na náměstí.</p>
       <ul>
-        <li><strong>5 minut</strong> od hranic s Německem.</li>
-        <li><strong>15 minut</strong> od Klínovce.</li>
-        <li>Dům se nachází přímo na náměstí.</li>
+        <li><strong>5 minut</strong> od hranic s Německem</li>
+        <li><strong>15 minut</strong> od Klínovce</li>
+        <li><strong>40 minut</strong> do Karlových Varů</li>
       </ul>`,
   },
   {
     id: 'klinovec',
-    title: 'Sport — Skiareál Klínovec',
-    content: `<p>Klínovec je <strong>největší lyžařsky propojené středisko v Česku</strong>.</p>
+    title: 'Sport — Klínovec',
+    content: `<p><strong>Klínovec</strong> je největší lyžařsky propojené středisko v Česku.</p>
       <ul>
-        <li>30 km sjezdovek</li>
-        <li>5 moderních lanovek</li>
-        <li>Propojení s německým Fichtelbergem — celkem více než 44 km tratí</li>
+        <li>30 km sjezdovek, 5 lanovek</li>
+        <li>Propojení s německým Fichtelbergem (44+ km tratí)</li>
+        <li>V létě jeden z největších <strong>bikeparků v Evropě</strong>, součást sítě Gravity</li>
       </ul>`,
-  },
-  {
-    id: 'bikepark',
-    title: 'Léto — Bikepark Klínovec',
-    content: `<p>V létě se Klínovec proměňuje v jeden z <strong>největších bikeparků v Evropě</strong>,
-      součást sítě Gravity.</p>
-      <p>Čekají tu jedny z nejdelších flow trailů na kontinentu, včetně tras zařazených
-      mezi <strong>10 nejlepších na světě</strong>.</p>`,
   },
   {
     id: 'investice',
     title: 'Lokalita jako investice',
     content: `<p>Turistická oblast s vysokou poptávkou po ubytování po celý rok.</p>
       <ul>
-        <li>Strategická poloha blízko Německa přitahuje nájemce.</li>
-        <li>Vhodné pro bydlení, rekreaci i dlouhodobý pronájem.</li>
-        <li>Lokalita, která žije po celý rok.</li>
+        <li>Strategická poloha u Německa přitahuje nájemce</li>
+        <li>Vhodné pro bydlení, rekreaci i dlouhodobý pronájem</li>
       </ul>`,
   },
 ];
 
-// ----- INVBUILD GATEWAY -----
+// ===== INVBUILD GATEWAY =====
 const gatewayCards = [
   {
     title: 'Naše projekty',
-    blurb: 'Další developerské projekty od INVBUILD — nízkoenergetické stavby i rekonstrukce.',
-    image: { src: '/img/dron_2.webp', alt: 'Developerské projekty INVBUILD' },
+    blurb: 'Další developerské projekty od INVBUILD.',
+    image: { src: '/img/dron_2.webp', alt: 'Projekty INVBUILD' },
     href: 'https://invbuild.cz/projekty',
     external: true,
   },
   {
     title: 'Reality v nabídce',
-    blurb: 'Prodej i pronájem nemovitostí s profesionálním a lidským přístupem.',
+    blurb: 'Prodej i pronájem nemovitostí.',
     image: { src: '/img/exterior/194A8787.webp', alt: 'Reality INVBUILD' },
     href: 'https://invbuild.cz/reality',
     external: true,
   },
   {
     title: 'Naše služby',
-    blurb: 'Hypotéka, odhad, pojištění, právní servis, foto/video, VR prohlídky.',
+    blurb: 'Hypotéka, právní servis, foto/video, VR.',
     image: { src: '/img/wellness/194A8687.webp', alt: 'Služby INVBUILD' },
     href: 'https://invbuild.cz',
     external: true,
@@ -198,16 +143,12 @@ const gatewayCards = [
 const navItems = [
   { id: 'hero',         label: 'Úvod' },
   { id: 'vyhody',       label: 'Výhody' },
-  { id: 'vejprty',      label: 'O projektu' },
+  { id: 'projekt',      label: 'O projektu' },
   { id: 'byty',         label: 'Byty' },
   { id: 'komerce',      label: 'Komerce' },
-  { id: 'technologie',  label: 'Technologie' },
-  { id: 'prostory',     label: 'Prostory' },
-  { id: 'wellness',     label: 'Wellness' },
-  { id: 'investice',    label: 'Investice' },
+  { id: 'vybaveni',     label: 'Vybavení' },
   { id: 'lokalita',     label: 'Lokalita' },
   { id: 'galerie',      label: 'Galerie' },
-  { id: 'invbuild',     label: 'INVBUILD' },
   { id: 'kontakt',      label: 'Kontakt' },
 ];
 ---
@@ -216,11 +157,15 @@ const navItems = [
   <Header />
   <SectionNav items={navItems} />
 
+  <!-- HERO s VIDEEM -->
   <Hero
     title="Vejprty — dům, který vydělává a žije"
+    subtitle="Čtyři bytové jednotky, kadeřnictví v provozu a moderní technologie v srdci Krušných hor."
     location="Vejprty · Krušné hory"
-    stats={stats}
-    images={heroImages}
+    stats={heroStats}
+    video={heroVideo}
+    primaryCta={{ label: 'Domluvit prohlídku', href: '#kontakt' }}
+    secondaryCta={{ label: 'Stáhnout prospekt', href: '#kontakt' }}
   />
 
   <!-- 01 — KLÍČOVÉ VÝHODY -->
@@ -230,45 +175,53 @@ const navItems = [
     num="01"
     eyebrow="Klíčové výhody"
     title="Bydlení, podnikání a investice v jednom."
-    intro="Čtyři bytové jednotky, komerční prostory a moderní technologie v srdci Krušných hor."
+    intro="Šest důvodů, proč je Vejprty výjimečná příležitost."
   >
     <Services items={featureCards} />
   </Section>
 
-  <!-- 02 — O PROJEKTU -->
-  <Section id="vejprty" variant="bone">
+  <!-- 02 — O PROJEKTU + INVESTICE (sloučeno) -->
+  <Section id="projekt" variant="bone">
     <StorySplit
       num="02"
       eyebrow="O projektu"
-      title="Dům, který má duši"
-      caption="Drone fotografie — Vejprty"
-      image={{ src: '/img/dron_1.webp', alt: 'Vejprty — letecký pohled na nemovitost' }}
+      title="Dům, který má duši — i potenciál"
+      caption="Pohled z dronu — Vejprty"
+      image={{ src: '/img/dron_1.webp', alt: 'Vejprty — celkový pohled na nemovitost' }}
     >
       <p>
-        Výjimečný rodinný dům ve Vejprtech spojuje <strong>historii</strong>, moderní
-        technologie a investiční potenciál. Nachází se přímo na náměstí a nabízí široké
-        možnosti využití — od vícegeneračního bydlení po komerční účely.
+        Výjimečný rodinný dům na náměstí ve Vejprtech spojuje <strong>historii</strong>
+        a moderní technologie. Dům prošel <strong>kompletní rekonstrukcí</strong> (fasáda,
+        střecha, kanalizace) a je připraven k okamžitému užívání.
       </p>
       <p>
-        Dům prošel <strong>kompletní rekonstrukcí</strong> zahrnující novou fasádu, střechu
-        a kanalizaci a je připraven k okamžitému užívání.
-      </p>
-      <p>
-        Součástí objektu je i udržovaná zahrada s pergolou, vytápěná <strong>sudová
-        vířivka</strong>, garáž 72 m² pro čtyři vozidla a chlívky pro drobná zvířata.
-        Celý pozemek je oplocen a nabízí soukromí pro rezidenty i návštěvníky.
+        Součástí objektu je udržovaná zahrada s pergolou a sudovou vířivkou,
+        garáž pro čtyři vozy a zavedený kadeřnický salon — tedy okamžitý
+        pasivní příjem.
       </p>
       <p class="split__cta-wrap">
         <a href="#kontakt" class="btn btn--accent">Domluvit prohlídku</a>
       </p>
     </StorySplit>
 
-    <!-- Klíčové parametry -->
-    <div class="params" data-reveal>
-      <div class="params__item"><span class="params__val lining">629 m²</span><span class="params__lbl">Zastavěná plocha</span></div>
-      <div class="params__item"><span class="params__val lining">72 m²</span><span class="params__lbl">Garáž (4 vozy)</span></div>
-      <div class="params__item"><span class="params__val lining">652 m²</span><span class="params__lbl">Ostatní plocha</span></div>
-      <div class="params__item"><span class="params__val lining">430 m²</span><span class="params__lbl">Celková plocha bytů</span></div>
+    <!-- Parametry + investiční výhody v jednom bloku -->
+    <div class="project-stats" data-reveal>
+      <div class="project-stats__grid">
+        <div class="project-stats__item"><span class="lining val">19 334 000 Kč</span><span class="lbl">Cena nemovitosti</span></div>
+        <div class="project-stats__item"><span class="lining val">629 m²</span><span class="lbl">Zastavěná plocha</span></div>
+        <div class="project-stats__item"><span class="lining val">430 m²</span><span class="lbl">Plocha bytů celkem</span></div>
+        <div class="project-stats__item"><span class="lining val">72 m²</span><span class="lbl">Garáž (4 vozy)</span></div>
+      </div>
+
+      <div class="project-stats__why">
+        <h3>Proč Vejprty jako investice</h3>
+        <ul>
+          <li><strong>Diversifikace</strong> — 4 byty + komerce v jednom objektu</li>
+          <li><strong>Okamžitý příjem</strong> — kadeřnictví v provozu se stálou nájemnicí</li>
+          <li><strong>Nízké náklady</strong> — fotovoltaika a úsporné vytápění</li>
+          <li><strong>Turistická oblast</strong> — Klínovec, Krušné hory, Německo 5 min</li>
+        </ul>
+      </div>
     </div>
   </Section>
 
@@ -278,8 +231,8 @@ const navItems = [
     variant="dark"
     num="03"
     eyebrow="Dispozice"
-    title="Čtyři samostatné bytové jednotky"
-    intro="Každý byt má vlastní kuchyň, koupelnu, vytápění a elektroměr. Klikněte na jednotku pro detail a galerii."
+    title="Čtyři samostatné byty"
+    intro="Každý byt má vlastní kuchyň, koupelnu, vytápění a elektroměr. Klikněte pro detail a galerii."
     width="wide"
   >
     <Units units={units} />
@@ -289,117 +242,76 @@ const navItems = [
   <Section id="komerce" variant="bone">
     <StorySplit
       num="04"
-      eyebrow="Komerční prostory"
-      title="Kadeřnický salon — zavedený provoz"
+      eyebrow="Komerční prostor"
+      title="Kadeřnictví v provozu"
       caption="Salon — 100 m²"
-      image={{ src: '/img/salon/194A8703.webp', alt: 'Kadeřnický salon' }}
+      image={{ src: '/img/salon/194A8704.webp', alt: 'Kadeřnický salon' }}
     >
       <p>
-        Plně zařízené <strong>kadeřnictví o ploše 100 m²</strong> s moderním vybavením
-        a stálou klientelou. Současná nájemnice si přeje zůstat — okamžitý pasivní příjem
+        Plně zařízený <strong>kadeřnický salon 100 m²</strong> se stálou klientelou.
+        Současná nájemnice si přeje zůstat — <strong>okamžitý pasivní příjem</strong>
         pro nového majitele.
       </p>
       <p>
-        Součástí objektu jsou i <strong>dvě malé provozovny v suterénu</strong>
-        (kadeřnictví a vinárna) a další nebytové prostory.
+        Bonus: v suterénu jsou další <strong>dvě malé provozovny</strong>
+        (kadeřnictví a vinárna) a nebytové prostory pro další využití.
       </p>
     </StorySplit>
   </Section>
 
-  <!-- 05 — TECHNOLOGIE -->
+  <!-- 05 — VYBAVENÍ & TECHNOLOGIE (ikon-feature list + 4 highlight fotky) -->
   <Section
-    id="technologie"
+    id="vybaveni"
     variant="dark"
     num="05"
     eyebrow="Technologie & vybavení"
-    title="Moderní systémy pro úsporný provoz"
-    intro="Nemovitost je plně zrekonstruována — fotovoltaika, venkovní výtah, vířivka, kamerový systém."
+    title="Moderně, úsporně, bezpečně"
+    intro="Nemovitost je plně zrekonstruována a vybavena moderními systémy."
     width="wide"
   >
-    <ImageGrid images={technologyImages} aspect="4 / 3" />
-  </Section>
-
-  <!-- 06 — SPOLEČNÉ PROSTORY -->
-  <Section
-    id="prostory"
-    variant="bone"
-    num="06"
-    eyebrow="Společné prostory"
-    title="Historické schodiště, moderní chodby"
-    intro="Společné prostory zachovávají historické detaily a doplňují je moderní úpravy."
-    width="wide"
-  >
-    <ImageGrid images={commonAreas} aspect="4 / 3" />
-
-    <div class="prostory__divider" aria-hidden="true"></div>
-
-    <header class="sub-head" data-reveal>
-      <span class="eyebrow"><span class="eyebrow__num">06.B</span><span>Sklep & další prostory</span></span>
-      <h3>Technické zázemí a multifunkční místnost</h3>
-    </header>
-    <ImageGrid images={storageBasement} aspect="4 / 3" />
-  </Section>
-
-  <!-- 07 — WELLNESS -->
-  <Section
-    id="wellness"
-    variant="dark"
-    num="07"
-    eyebrow="Relax & wellness"
-    title="Privátní wellness s vířivkou"
-    intro="Speciální místnost s unikátním geometrickým stropem a loveckými trofejemi — prostor pro odpočinek."
-  >
-    <ImageGrid images={wellnessImages} aspect="4 / 3" minWidth="280px" />
-  </Section>
-
-  <!-- 08 — INVESTIČNÍ POTENCIÁL -->
-  <Section
-    id="investice"
-    variant="bone"
-    num="08"
-    eyebrow="Investiční potenciál"
-    title="Atraktivní dlouhodobá investice"
-    align="center"
-    width="default"
-  >
-    <div class="invest" data-reveal>
-      <div class="invest__cards">
-        <div class="invest__card">
-          <span class="invest__val lining">4</span>
-          <span class="invest__lbl">Pronajatelné byty</span>
-        </div>
-        <div class="invest__card">
-          <span class="invest__val">Zavedený</span>
-          <span class="invest__lbl">Komerční prostor</span>
-        </div>
-        <div class="invest__card">
-          <span class="invest__val">FV</span>
-          <span class="invest__lbl">Úsporný provoz</span>
-        </div>
+    <div class="features-list" data-reveal>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div><strong>Fotovoltaika</strong><span>Solární systém na střeše + garáži</span></div>
       </div>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h12v18H6z M12 7v10 M9 12h6" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div><strong>Venkovní výtah</strong><span>Bezbariérový přístup do všech pater</span></div>
+      </div>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 4l2 3h2l2-3 M3 21h18" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div><strong>Vířivka & wellness</strong><span>Sudová vyhřívaná vířivka + privátní wellness</span></div>
+      </div>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13l9-10 9 10v8a2 2 0 01-2 2h-4v-7H10v7H6a2 2 0 01-2-2v-8" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div><strong>Garáž 72 m²</strong><span>Krytá pro 4 vozy + pergola</span></div>
+      </div>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div><strong>Kamery Hikvision</strong><span>Bezpečnostní systém po celém objektu</span></div>
+      </div>
+      <div class="features-list__item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18 M7 6h10 M5 18h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div><strong>Úsporné vytápění</strong><span>Moderní kotelna v suterénu</span></div>
+      </div>
+    </div>
 
-      <ul class="invest__points">
-        <li><strong>Diversifikace příjmů</strong> z rezidenčních i komerčních prostor</li>
-        <li><strong>Strategická poloha</strong> blízko Německa přitahuje nájemce</li>
-        <li><strong>Nízké provozní náklady</strong> díky fotovoltaice a úspornému vytápění</li>
-        <li><strong>Turistická oblast</strong> s vysokou poptávkou po ubytování celoročně</li>
-      </ul>
-
-      <p class="invest__close">
-        Tato nemovitost představuje ideální kombinaci <strong>bydlení a podnikání</strong>
-        v jednom. Díky moderním technologiím, nízkým provozním nákladům a atraktivní
-        poloze v srdci Krušných hor jde o stabilní a dlouhodobě výnosnou investici.
-      </p>
+    <!-- 4 highlight fotky (ne grid 12) -->
+    <div class="highlight-row">
+      <figure class="highlight"><img src="/img/fotovoltaika/194A8732.webp" alt="Fotovoltaika" loading="lazy"/><figcaption>Solární panely</figcaption></figure>
+      <figure class="highlight"><img src="/img/vytah/194A8718.webp" alt="Výtah" loading="lazy"/><figcaption>Skleněný výtah</figcaption></figure>
+      <figure class="highlight"><img src="/img/exterior/194A8746.webp" alt="Vířivka" loading="lazy"/><figcaption>Vířivka v zahradě</figcaption></figure>
+      <figure class="highlight"><img src="/img/garaz/194A8701.webp" alt="Garáž" loading="lazy"/><figcaption>Garáž s fotovoltaikou</figcaption></figure>
     </div>
   </Section>
 
-  <!-- 09 — LOKALITA -->
+  <!-- 06 — LOKALITA -->
   <Section
     id="lokalita"
-    variant="dark"
-    num="09"
+    variant="bone"
+    num="06"
     eyebrow="Mapa & lokalita"
-    title="Vejprty, Krušné hory"
+    title="V srdci Krušných hor"
     intro="5 minut od hranic s Německem, 15 minut od Klínovce."
     width="wide"
   >
@@ -410,35 +322,34 @@ const navItems = [
     />
   </Section>
 
-  <!-- 10 — GALERIE (drone + okolí) -->
+  <!-- 07 — GALERIE (8 vybraných) -->
   <Section
     id="galerie"
-    variant="bone"
-    num="10"
-    eyebrow="Galerie projektu"
-    title="Vejprty z výšky"
-    intro="Drone fotografie nemovitosti a historického centra Vejprt."
+    variant="dark"
+    num="07"
+    eyebrow="Galerie"
+    title="Vejprty z výšky a okolí"
+    intro="Drone fotografie nemovitosti, zahrada a historické centrum."
   >
     <Gallery images={galleryImages} />
   </Section>
 
-  <!-- 11 — INVBUILD GATEWAY -->
+  <!-- 08 — INVBUILD GATEWAY -->
   <Section
     id="invbuild"
-    variant="dark"
-    num="11"
+    variant="bone"
+    num="08"
     eyebrow="Pokračujte"
     title="Více od INVBUILD"
-    intro="Další projekty, nemovitosti v nabídce a kompletní servis na hlavním webu."
     align="center"
   >
     <Services items={gatewayCards} />
   </Section>
 
-  <!-- 12 — KONTAKT -->
+  <!-- 09 — KONTAKT -->
   <Section
     id="kontakt"
-    num="12"
+    num="09"
     eyebrow="Kontakt"
     title="Domluvte si prohlídku"
     align="center"
@@ -453,118 +364,141 @@ const navItems = [
 <style is:global>
   .split__body .split__cta-wrap { margin-top: 1.5rem; }
 
-  /* Parametry pod About */
-  .params {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+  /* Project stats panel — pod O projektu */
+  .project-stats {
+    margin-top: clamp(3rem, 6vw, 5rem);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    background: rgba(217, 152, 33, 0.08);
-    border: 1px solid var(--accent);
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
   }
-  .params__item {
+  @media (max-width: 860px) {
+    .project-stats { grid-template-columns: 1fr; }
+  }
+
+  .project-stats__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .project-stats__item {
+    background: var(--paper-bone);
+    padding: 1.5rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    text-align: center;
+    gap: 0.4rem;
   }
-  .params__val {
+  .project-stats__item .val {
     font-family: var(--font-display);
-    font-size: var(--fs-2xl);
+    font-size: var(--fs-xl);
     font-weight: 700;
     color: var(--accent-hover);
-    letter-spacing: var(--tracking-tight);
     line-height: 1;
+    letter-spacing: var(--tracking-tight);
   }
-  .params__lbl {
+  .project-stats__item .lbl {
     font-size: var(--fs-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
     color: var(--muted);
   }
 
-  /* Sub-header inside section */
-  .sub-head {
-    margin: clamp(2.5rem, 4vw, 3.5rem) 0 1.5rem;
+  .project-stats__why { padding-top: 0.5rem; }
+  .project-stats__why h3 {
+    font-size: var(--fs-lg);
+    margin: 0 0 1rem;
+  }
+  .project-stats__why ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
   }
-  .sub-head h3 { font-size: var(--fs-xl); margin: 0; }
-
-  /* Divider mezi grids */
-  .prostory__divider {
-    height: 1px;
-    background: var(--line);
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  /* Investment cards */
-  .invest {
-    max-width: 720px;
-    margin-inline: auto;
-  }
-  .invest__cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-  .invest__card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    align-items: center;
-    text-align: center;
-    padding: 1.5rem 1rem;
-    border: 1px solid var(--accent);
-    border-radius: var(--radius-md);
-    background: rgba(217, 152, 33, 0.08);
-  }
-  .invest__val {
-    font-family: var(--font-display);
-    font-size: var(--fs-2xl);
-    font-weight: 700;
-    color: var(--accent-hover);
-    line-height: 1;
-  }
-  .invest__lbl {
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--muted);
-  }
-  .invest__points {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    margin-bottom: 2rem;
-    text-align: left;
-  }
-  .invest__points li {
+  .project-stats__why li {
     position: relative;
-    padding-left: 1.3rem;
-    color: var(--muted);
+    padding-left: 1.2rem;
     line-height: 1.55;
+    color: var(--muted);
   }
-  .invest__points li::before {
+  .project-stats__why li::before {
     content: '';
     position: absolute;
-    left: 0; top: 0.7em;
+    left: 0; top: 0.65em;
     width: 8px; height: 1px;
     background: var(--accent);
   }
-  .invest__points strong { color: var(--ink); }
-  .invest__close {
-    text-align: left;
-    color: var(--muted);
-    line-height: 1.65;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--line);
+  .project-stats__why strong { color: var(--ink); }
+
+  /* Features list — ikony + text, ne grid fotek */
+  .features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .invest__close strong { color: var(--ink); }
+  .features-list__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    align-items: center;
+  }
+  .features-list__item svg {
+    width: 28px; height: 28px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .features-list__item strong {
+    display: block;
+    color: var(--paper);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .features-list__item span {
+    display: block;
+    color: rgba(255,255,255,0.65);
+    font-size: var(--fs-sm);
+    line-height: 1.4;
+  }
+
+  /* Highlight row — 4 fotky vedle sebe (ne grid 12) */
+  .highlight-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+  @media (max-width: 720px) { .highlight-row { grid-template-columns: 1fr 1fr; } }
+  .highlight {
+    margin: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4 / 3;
+  }
+  .highlight img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.8s var(--ease-out);
+  }
+  .highlight:hover img { transform: scale(1.05); }
+  .highlight figcaption {
+    position: absolute;
+    bottom: 0.5rem; left: 0.65rem; right: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
 </style>
