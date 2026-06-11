@@ -1,0 +1,59 @@
+---
+// ImageGrid — flexibilní galerie pro thematic sekce (technologie, wellness, sklep, společné prostory)
+export interface ImageItem {
+  url: string;
+  alt: string;
+  caption?: string;
+}
+export interface Props {
+  images: ImageItem[];
+  /** Tile aspect ratio. Default 4/3 */
+  aspect?: string;
+  /** min-width pro auto-fit. Default 240px */
+  minWidth?: string;
+}
+const { images, aspect = '4 / 3', minWidth = '240px' } = Astro.props;
+---
+
+<div class="grid" style={`--aspect: ${aspect}; --min: ${minWidth};`} role="list">
+  {images.map((img, i) => (
+    <figure class="grid__item" role="listitem" data-reveal style={`--reveal-delay: ${(i % 6) * 60}ms`}>
+      <div class="grid__img">
+        <img src={img.url} alt={img.alt} loading="lazy" />
+      </div>
+      {img.caption && <figcaption class="grid__caption">{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+  .grid__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+  }
+  .grid__img {
+    aspect-ratio: var(--aspect);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--paper-bone);
+  }
+  .grid__img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 1s var(--ease-out);
+  }
+  .grid__item:hover .grid__img img { transform: scale(1.04); }
+  .grid__caption {
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    line-height: 1.4;
+    padding-inline: 0.25rem;
+  }
+  :global(.section--dark) .grid__caption { color: rgba(255,255,255,0.65); }
+</style>

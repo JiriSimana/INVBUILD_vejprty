@@ -1,0 +1,72 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Prodej domu Vejprty — 4 byty + komerce — INVBUILD',
+  description = 'Výjimečný rodinný dům ve Vejprtech (Krušné hory). 4 bytové jednotky, komerční prostory, fotovoltaika, venkovní výtah, garáž pro 4 vozy, wellness s vířivkou. Cena 19 334 000 Kč. Prodává INVBUILD.',
+  ogImage = '/og-image.jpg',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#14110c" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="cs_CZ" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- JSON-LD: Residence -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ApartmentComplex",
+      "name": "Dům Vejprty — 4 byty + komerce",
+      "description": description,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Vejprty",
+        "addressRegion": "Krušné hory",
+        "addressCountry": "CZ"
+      },
+      "numberOfAccommodationUnits": 4,
+      "offers": {
+        "@type": "Offer",
+        "price": 19334000,
+        "priceCurrency": "CZK"
+      }
+    })} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

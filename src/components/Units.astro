@@ -1,0 +1,193 @@
+---
+// Units — 4 bytové jednotky jako rozbalovací karty s galerií
+export interface Unit {
+  id: number;
+  name: string;
+  floor: string;
+  area: string;
+  layout: string;
+  description: string;
+  gallery: string[];
+}
+export interface Props {
+  units: Unit[];
+}
+const { units } = Astro.props;
+---
+
+<div class="units">
+  {units.map((u, i) => (
+    <details class="unit" open={i === 0}>
+      <summary class="unit__head">
+        <span class="unit__num lining">{String(u.id).padStart(2, '0')}</span>
+        <div class="unit__meta">
+          <h3 class="unit__name">{u.name}</h3>
+          <div class="unit__badges">
+            <span class="badge">{u.layout}</span>
+            <span class="badge">{u.area}</span>
+            <span class="badge badge--muted">{u.floor}</span>
+          </div>
+        </div>
+        <span class="unit__chevron" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </summary>
+
+      <div class="unit__body">
+        <p class="unit__desc">{u.description}</p>
+
+        <div class="unit__gallery" role="list">
+          {u.gallery.map((src, idx) => (
+            <a class="unit__tile" href={src} role="listitem" data-tile={idx}>
+              <img src={src} alt={`${u.name} — foto ${idx + 1}`} loading="lazy" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .units {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .unit {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .unit[open] {
+    border-color: var(--accent);
+    background: var(--paper-bone);
+  }
+  :global(.section--dark) .unit {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  :global(.section--dark) .unit[open] {
+    background: rgba(217, 152, 33, 0.06);
+    border-color: rgba(217, 152, 33, 0.35);
+  }
+
+  .unit__head {
+    cursor: pointer;
+    list-style: none;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    user-select: none;
+  }
+  .unit__head::-webkit-details-marker { display: none; }
+  .unit__head::marker { content: ''; display: none; }
+
+  .unit__num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent);
+  }
+  .unit__name {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    margin: 0 0 0.45rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .unit__badges {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .badge--muted {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    font-weight: 500;
+  }
+  :global(.section--dark) .badge--muted {
+    color: rgba(255,255,255,0.7);
+    border-color: rgba(255,255,255,0.18);
+  }
+
+  .unit__chevron {
+    color: var(--muted-soft);
+    transition: transform var(--dur-base) var(--ease-out),
+                color var(--dur-fast) var(--ease-out);
+  }
+  .unit[open] .unit__chevron {
+    transform: rotate(180deg);
+    color: var(--accent);
+  }
+  :global(.section--dark) .unit__chevron { color: rgba(255,255,255,0.45); }
+
+  /* Body — popis + galerie */
+  .unit__body {
+    padding: 0 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .unit__desc {
+    font-size: var(--fs-base);
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 70ch;
+  }
+  :global(.section--dark) .unit__desc { color: rgba(255,255,255,0.78); }
+
+  /* Gallery grid uvnitř bytu */
+  .unit__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.5rem;
+  }
+  .unit__tile {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--paper-warm);
+    display: block;
+  }
+  .unit__tile img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .unit__tile:hover img { transform: scale(1.04); }
+
+  /* První tile větší jako "hero" bytu */
+  .unit__tile:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 16 / 11;
+  }
+  @media (max-width: 600px) {
+    .unit__tile:first-child {
+      grid-column: span 1;
+      grid-row: span 1;
+      aspect-ratio: 4 / 3;
+    }
+    .unit__head { padding: 1rem 1.1rem; gap: 0.8rem; }
+    .unit__body { padding: 0 1.1rem 1.1rem; }
+    .unit__name { font-size: var(--fs-base); }
+  }
+</style>
