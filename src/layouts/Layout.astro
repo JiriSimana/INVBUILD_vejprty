@@ -9,7 +9,7 @@ export interface Props {
 
 const {
   title = 'Prodej domu Vejprty — 4 byty + komerce — INVBUILD',
-  description = 'Výjimečný rodinný dům ve Vejprtech (Krušné hory). 4 bytové jednotky, komerční prostory, fotovoltaika, venkovní výtah, garáž pro 4 vozy, wellness s vířivkou. Cena 19 334 000 Kč. Prodává INVBUILD.',
+  description = 'Výjimečný dům ve Vejprtech (Krušné hory). 4 bytové jednotky, komerční prostory, fotovoltaika, venkovní výtah, garáž pro 4 vozy, wellness s vířivkou. Cena na vyžádání. Prodává INVBUILD.',
   ogImage = '/og-image.jpg',
 } = Astro.props;
 
@@ -58,12 +58,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
         "addressRegion": "Krušné hory",
         "addressCountry": "CZ"
       },
-      "numberOfAccommodationUnits": 4,
-      "offers": {
-        "@type": "Offer",
-        "price": 19334000,
-        "priceCurrency": "CZK"
-      }
+      "numberOfAccommodationUnits": 4
     })} />
   </head>
   <body>
